@@ -18,13 +18,13 @@ Gem::Specification.new do |s|
   s.metadata["rubygems_mfa_required"] = "true"
   s.files = Dir["lib/**/*.rb"]
   s.add_dependency("nokogiri", "~> 1.10")
-  s.add_dependency("rack", ">= 2.0")
+  s.add_dependency("rack", [">= 2.0", "< 4.0"])
   s.add_development_dependency("rackup", "~> 2.1")
   s.add_development_dependency("rspec", "~> 3.10")
   s.add_development_dependency("rspec-core", "~> 3.10")
-  s.add_development_dependency("rspec-temp_dir")
+  s.add_development_dependency("rspec-temp_dir", "~> 1.1")
   s.add_development_dependency("rubocop", "~> 1.25.1")
   s.add_development_dependency("rubocop-performance", "~> 1.13.3")
   s.add_development_dependency("simplecov", "~> 0")
-  s.add_development_dependency("timecop")
+  s.add_development_dependency("timecop", "~> 0.9")
 end
