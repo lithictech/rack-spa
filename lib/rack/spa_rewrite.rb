@@ -43,9 +43,9 @@ module Rack
 
       @index_bytes = ::File.read(@index_path) if @index_bytes.nil? || @index_mtime < lastmodhttp
       headers = {
-        "Content-Length" => @index_bytes.bytesize,
-        "Content-Type" => "text/html",
-        "Last-Modified" => lastmodhttp,
+        "content-length" => @index_bytes.bytesize.to_s,
+        "content-type" => "text/html",
+        "last-modified" => lastmodhttp,
       }
       return [200, headers, [@index_bytes]]
     end

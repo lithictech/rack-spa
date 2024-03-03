@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.files = Dir["lib/**/*.rb"]
   s.add_dependency("nokogiri", "~> 1.10")
   s.add_dependency("rack", ">= 2.0")
+  s.add_development_dependency("rackup", "~> 2.1")
   s.add_development_dependency("rspec", "~> 3.10")
   s.add_development_dependency("rspec-core", "~> 3.10")
   s.add_development_dependency("rspec-temp_dir")

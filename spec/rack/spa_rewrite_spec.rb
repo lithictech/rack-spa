@@ -24,7 +24,7 @@ RSpec.describe Rack::SpaRewrite do
     expect(mw.call(Rack::MockRequest.env_for("/w", method: :get))).to eq(
       [
         200,
-        {"Content-Length" => 13, "Content-Type" => "text/html", "Last-Modified" => "Sun, 30 Oct 2022 00:00:00 GMT"},
+        {"content-length" => "13", "content-type" => "text/html", "last-modified" => "Sun, 30 Oct 2022 00:00:00 GMT"},
         ["<html></html>"],
       ],
     )
@@ -35,7 +35,7 @@ RSpec.describe Rack::SpaRewrite do
     expect(mw.call(Rack::MockRequest.env_for("/w", method: :head))).to match_array(
       [
         200,
-        {"Content-Length" => 13, "Content-Type" => "text/html", "Last-Modified" => "Sun, 30 Oct 2022 00:00:00 GMT"},
+        {"content-length" => "13", "content-type" => "text/html", "last-modified" => "Sun, 30 Oct 2022 00:00:00 GMT"},
         be_empty,
       ],
     )
@@ -44,7 +44,7 @@ RSpec.describe Rack::SpaRewrite do
   it "handles OPTIONs" do
     mw = described_class.new(app, index_path:, html_only: false)
     expect(mw.call(Rack::MockRequest.env_for("/w", method: :options))).to eq(
-      [200, {"Allow" => "GET, HEAD, OPTIONS", "Content-Length" => "0"}, []],
+      [200, {"Allow" => "GET, HEAD, OPTIONS", "content-length" => "0"}, []],
     )
   end
 
@@ -60,7 +60,7 @@ RSpec.describe Rack::SpaRewrite do
     expect(mw.call(env)).to eq(
       [
         200,
-        {"Content-Length" => 13, "Content-Type" => "text/html", "Last-Modified" => "Sun, 30 Oct 2022 00:00:00 GMT"},
+        {"content-length" => "13", "content-type" => "text/html", "last-modified" => "Sun, 30 Oct 2022 00:00:00 GMT"},
         ["<html></html>"],
       ],
     )
@@ -77,7 +77,7 @@ RSpec.describe Rack::SpaRewrite do
       expect(mw.call(Rack::MockRequest.env_for("/w.html", method: :get))).to eq(
         [
           200,
-          {"Content-Length" => 13, "Content-Type" => "text/html", "Last-Modified" => "Sun, 30 Oct 2022 00:00:00 GMT"},
+          {"content-length" => "13", "content-type" => "text/html", "last-modified" => "Sun, 30 Oct 2022 00:00:00 GMT"},
           ["<html></html>"],
         ],
       )
@@ -91,7 +91,7 @@ RSpec.describe Rack::SpaRewrite do
       expect(mw.call(Rack::MockRequest.env_for("/w", method: :get))).to eq(
         [
           200,
-          {"Content-Length" => 13, "Content-Type" => "text/html", "Last-Modified" => "Sun, 30 Oct 2022 00:00:00 GMT"},
+          {"content-length" => "13", "content-type" => "text/html", "last-modified" => "Sun, 30 Oct 2022 00:00:00 GMT"},
           ["<html></html>"],
         ],
       )
@@ -101,7 +101,7 @@ RSpec.describe Rack::SpaRewrite do
       expect(mw.call(Rack::MockRequest.env_for("/w.html", method: :get))).to eq(
         [
           200,
-          {"Content-Length" => 13, "Content-Type" => "text/html", "Last-Modified" => "Sun, 30 Oct 2022 00:00:00 GMT"},
+          {"content-length" => "13", "content-type" => "text/html", "last-modified" => "Sun, 30 Oct 2022 00:00:00 GMT"},
           ["<html></html>"],
         ],
       )

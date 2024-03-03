@@ -1,0 +1,9 @@
+<html><head><script>window.rackDynamicConfig={"VITE_API_HOST":"/api","VITE_RELEASE":"ui@1.0.0","NODE_ENV":"production"}</script></head>
+<body><div id="status">Making API call...</div>
+<script>
+    fetch(window.rackDynamicConfig.VITE_API_HOST).then(async (r) => {
+      const txt = await r.text()
+      document.querySelector('#status').innerHTML = `Response: Code ${r.status}, Body: ${txt}`
+    })
+</script>
+</body></html>

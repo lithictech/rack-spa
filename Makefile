@@ -1,3 +1,4 @@
+.PHONY: demo
 VERSION := `cat lib/rack_spa.rb | grep 'VERSION =' | cut -d '"' -f2`
 
 install:
@@ -10,6 +11,9 @@ fmt: fix
 
 test:
 	bundle exec rspec spec/
+
+demo:
+	cd demo && bundle exec rackup
 
 build:
 ifeq ($(strip $(VERSION)),)

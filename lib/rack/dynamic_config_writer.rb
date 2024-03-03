@@ -39,16 +39,16 @@ module Rack
       self.prepare
       json = JSON.generate(keys_and_values)
       script = "#{@global_assign}=#{json}"
-      File.open(@index_html_backup) do |f|
+      ::File.open(@index_html_backup) do |f|
         doc = Nokogiri::HTML5(f)
         doc.at("head").prepend_child("<script>#{script}</script>")
-        File.write(@index_html_path, doc.serialize)
+        ::File.write(@index_html_path, doc.serialize)
       end
     end
 
     protected def prepare
-      return if File.exist?(@index_html_backup)
-      FileUtils.move(@index_html_path, @index_html_backup)
+      return if ::File.exist?(@index_html_backup)
+      ::FileUtils.move(@index_html_path, @index_html_backup)
     end
 
     def self.pick_env(regex_or_prefix)
