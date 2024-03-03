@@ -15,11 +15,7 @@ jobs:
         with:
           ruby-version: 3.1
           bundler-cache: true
-      - name: Start backing services
-        run: docker-compose up -d
       - name: Run rubocop
         run: bundle exec rubocop
-      - name: Run specs
-        run: bundle exec rspec spec/
       - name: Run specs
         run: bundle exec rspec spec/
