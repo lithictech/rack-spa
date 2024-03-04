@@ -30,9 +30,9 @@ module Rack
       global_assign: GLOBAL_ASSIGN,
       backup_suffix: BACKUP_SUFFIX
     )
-      @index_html_path = index_html_path
+      @index_html_path = index_html_path.to_s
       @global_assign = global_assign
-      @index_html_backup = index_html_path + backup_suffix
+      @index_html_backup = @index_html_path + backup_suffix
     end
 
     def emplace(keys_and_values)

@@ -5,7 +5,7 @@ require "rack/dynamic_config_writer"
 RSpec.describe Rack::DynamicConfigWriter do
   include_context "uses temp dir"
 
-  let(:index) { (temp_dir_path + "index.html").to_s }
+  let(:index) { temp_dir_path + "index.html" }
 
   it "sets the config using default parameters" do
     File.write(index, "<html><head></head></html>")
