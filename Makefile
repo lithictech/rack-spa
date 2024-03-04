@@ -13,7 +13,8 @@ test:
 	bundle exec rspec spec/
 
 demo:
-	cd demo && bundle exec rackup
+	@echo "Go to: http://localhost:9292/ui"
+	@cd demo && bundle exec rackup
 
 build:
 ifeq ($(strip $(VERSION)),)

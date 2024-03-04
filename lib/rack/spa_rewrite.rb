@@ -3,21 +3,24 @@
 require "rack"
 
 module Rack
+  # Intercept HTTP requests and serve index.html.
+  # This middleware caches the index_html file (or the bytes can be passed in).
+  # If the file contents change, new content is NOT served.
   class SpaRewrite
     ALLOWED_VERBS = ["GET", "HEAD", "OPTIONS"].freeze
     ALLOW_HEADER = ALLOWED_VERBS.join(", ")
 
-    def initialize(app, index_path:, html_only:)
+    # @param app The Rack app.
+    # @param index_bytes [String] The index.html contents to serve.
+    # @param html_only [true,false] True to only intercept html requests,
+    #   false to intercept all requests. Usually you want to setup SpaRewrite
+    #   first using html:false, then html:true as the final Rack app/middleware.
+    def initialize(app, index_bytes:, html_only:)
       @app = app
-      @index_path = index_path
+      @index_bytes = index_bytes
       @html_only = html_only
-      begin
-        @index_mtime = ::File.mtime(@index_path).httpdate
-      rescue Errno::ENOENT
-        @index_mtime = Time.at(0)
-      end
-      @index_bytes = nil
       @head = Rack::Head.new(->(env) { get env })
+      @started_at = Time.now.httpdate
     end
 
     def call(env)
@@ -37,15 +40,12 @@ module Rack
       return [200, {"Allow" => ALLOW_HEADER, Rack::CONTENT_LENGTH => "0"}, []] if
         request.options?
 
-      lastmod = ::File.mtime(@index_path)
-      lastmodhttp = lastmod.httpdate
-      return [304, {}, []] if request.get_header("HTTP_IF_MODIFIED_SINCE") == lastmodhttp
+      return [304, {}, []] if request.get_header("HTTP_IF_MODIFIED_SINCE") == @started_at
 
-      @index_bytes = ::File.read(@index_path) if @index_bytes.nil? || @index_mtime < lastmodhttp
       headers = {
         "content-length" => @index_bytes.bytesize.to_s,
         "content-type" => "text/html",
-        "last-modified" => lastmodhttp,
+        "last-modified" => @started_at,
       }
       return [200, headers, [@index_bytes]]
     end

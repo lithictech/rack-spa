@@ -48,4 +48,11 @@ RSpec.describe Rack::DynamicConfigWriter do
     dcw.emplace({"x" => "3"})
     expect(File.read(index)).to eq("<html><head><script>globals.x={\"x\":\"3\"}</script></head><body></body></html>")
   end
+
+  it "can render to a string" do
+    File.write(index, "<html><body></body></html>")
+    dcw = described_class.new(index, global_assign: "globals.x")
+    s = dcw.as_string({"x" => "3"})
+    expect(s).to eq("<html><head><script>globals.x={\"x\":\"3\"}</script></head><body></body></html>")
+  end
 end

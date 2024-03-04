@@ -35,20 +35,35 @@ module Rack
       @index_html_backup = @index_html_path + backup_suffix
     end
 
+    # Copy +index_html_path+ to index.html.original (see +BACKUP_SUFFIX+),
+    # and add the dynamic config to +index_html_path+.
+    # Use +as_string+ to avoid file writes.
     def emplace(keys_and_values)
-      self.prepare
-      json = JSON.generate(keys_and_values)
-      script = "#{@global_assign}=#{json}"
+      self.ensure_unmodified_html_backup
       ::File.open(@index_html_backup) do |f|
-        doc = Nokogiri::HTML5(f)
-        doc.at("head").prepend_child("<script>#{script}</script>")
-        ::File.write(@index_html_path, doc.serialize)
+        new_html = self.serialize(f, keys_and_values)
+        ::File.write(@index_html_path, new_html)
       end
     end
 
-    protected def prepare
+    protected def ensure_unmodified_html_backup
       return if ::File.exist?(@index_html_backup)
       ::FileUtils.move(@index_html_path, @index_html_backup)
+    end
+
+    # Return the new index.html with dynamic config as a string.
+    def as_string(keys_and_values)
+      ::File.open(@index_html_path) do |f|
+        return self.serialize(f, keys_and_values)
+      end
+    end
+
+    protected def serialize(f, keys_and_values)
+      json = JSON.generate(keys_and_values)
+      script = "#{@global_assign}=#{json}"
+      doc = Nokogiri::HTML5(f)
+      doc.at("head").prepend_child("<script>#{script}</script>")
+      return doc.serialize
     end
 
     def self.pick_env(regex_or_prefix)

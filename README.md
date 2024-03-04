@@ -32,9 +32,8 @@ ui = Rack::Builder.new do
     "VITE_RELEASE" => "ui@1.0.0",
     "NODE_ENV" => 'production',
   }.merge(Rack::DynamicConfigWriter.pick_env("VITE_"))
-  dw.emplace(env)
-  # self.use Rack::Csp, policy: "default-src 'self'; img-src 'self' data:"
-  Rack::SpaApp.run_spa_app(self, "ui-dist", enforce_ssl: ENV['RACK_ENV'] != 'development')
+  index_bytes = dw.as_string(env)
+  Rack::SpaApp.run_spa_app(self, "ui-dist", enforce_ssl: false, index_bytes:)
 end
 
 map "/ui" do

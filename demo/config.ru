@@ -26,8 +26,8 @@ ui = Rack::Builder.new do
     "VITE_RELEASE" => "ui@1.0.0",
     "NODE_ENV" => "production",
   }
-  dw.emplace(env)
-  Rack::SpaApp.run_spa_app(self, "jsapp", enforce_ssl: false)
+  index_bytes = dw.as_string(env)
+  Rack::SpaApp.run_spa_app(self, "jsapp", enforce_ssl: false, index_bytes:)
 end
 
 map "/ui" do
